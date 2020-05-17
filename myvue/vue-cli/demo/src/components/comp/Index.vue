@@ -19,6 +19,7 @@
 import YForm from "./YForm.vue";
 import YFormItem from "./YFormItem.vue";
 import YInput from "./YInput.vue";
+import Notice from "../Notice"
 
 export default {
   components: {
@@ -43,7 +44,11 @@ export default {
     login() {
       this.$refs.loginForm.validate(isValid => {
         if (!isValid) {
-          console.log('校验失败')
+          this.$create(Notice, {
+            title: '登录失败',
+            message: '校验错误, 请重试',
+            duration: 3000
+          }).show();
         } else {
           console.log('校验成功, 登录')
         }
