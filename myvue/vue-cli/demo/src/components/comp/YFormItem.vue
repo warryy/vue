@@ -1,0 +1,64 @@
+<template>
+  <div>
+    <span>{{label}}</span>
+    <slot></slot>
+    <span class="err-tips" v-show="errTips">{{errTips}}</span>
+  </div>
+</template>
+
+<script>
+import schema from "async-validator";
+export default {
+  inject: ["form"],
+  data() {
+    return {
+      errTips: ""
+    };
+  },
+  props: {
+    label: {
+      type: String,
+      default: ""
+    },
+    // 校验的字段名称
+    prop: {
+      type: String,
+      default: "",
+      required: false
+    }
+  },
+  mounted() {
+    this.$on("validate", function() {
+      this.validate();
+    });
+  },
+  methods: {
+    validate() {
+      return new Promise((resolve, reject) => {
+        let key = this.prop;
+        let rule = this.form.rules[key];
+        let value = this.form.model[key];
+        if (!key) {
+          resolve()
+        }
+        let validator = new schema({ [key]: rule });
+        validator.validate({ [key]: value }, errs => {
+          if (errs) {
+            this.errTips = errs[0].message;
+            reject();
+          } else {
+            this.errTips = "";
+            resolve();
+          }
+        });
+      });
+    }
+  }
+};
+</script>
+
+<style scoped>
+.err-tips {
+  color: red;
+}
+</style>

@@ -1,21 +1,28 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
+    <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <Slot></Slot>
+    <div class="demo">
+      <Comp></Comp>
+    </div>
+    <div class="demo">
+      <mySlot></mySlot>
+    </div>
   </div>
 </template>
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
-import Slot from './components/slots/Index'
+import mySlot from "./components/slots/Index";
+import Comp from "./components/comp/Index";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    Slot
+    mySlot,
+    Comp,
   }
-}
+};
 </script>
 
 <style>
@@ -26,5 +33,9 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.demo {
+  margin: 5px;
+  border: 1px solid #46a0f0;
 }
 </style>
