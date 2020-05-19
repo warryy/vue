@@ -9,6 +9,8 @@
 <script>
 import schema from "async-validator";
 export default {
+  name: 'YFormItem',
+  componentName: 'YFormItem',
   inject: ["form"],
   data() {
     return {
@@ -29,6 +31,7 @@ export default {
   },
   mounted() {
     this.$on("validate", function() {
+      console.log('on input validate')
       this.validate();
     });
   },

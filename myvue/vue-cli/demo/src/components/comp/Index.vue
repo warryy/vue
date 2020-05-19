@@ -47,7 +47,7 @@ export default {
           this.$create(Notice, {
             title: '登录失败',
             message: '校验错误, 请重试',
-            duration: 3000
+            duration: 1000
           }).show();
         } else {
           console.log('校验成功, 登录')
