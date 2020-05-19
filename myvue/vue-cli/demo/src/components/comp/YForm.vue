@@ -6,6 +6,7 @@
 
 <script>
 export default {
+  componentName: 'YForm',
   provide() {
     return {
       form: this
@@ -17,12 +18,20 @@ export default {
       type: Object
     }
   },
+  created() {
+    this.fields = [];
+    this.$on('warryy.form.addField', item => {
+      console.log('this', this)
+      this.fields.push(item);
+    })
+  },
   methods: {
     validate(cb) {
       console.log('yform validate')
-      let resArr = this.$children.filter(child => child.prop).map(child => child.validate())
-      console.log({resArr})
-      Promise.all(resArr).then(res => {
+      // let fields = this.$children.filter(child => child.prop).map(child => child.validate())
+      let fields = this.fields.map(field => field.validate());
+      console.log({fields})
+      Promise.all(fields).then(res => {
         console.log('yform promise all res', res)
         cb(true)
       }).catch(e => {

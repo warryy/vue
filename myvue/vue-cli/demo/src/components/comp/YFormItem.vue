@@ -8,6 +8,8 @@
 
 <script>
 import schema from "async-validator";
+import emitter from "@/mixins/emitter.js"
+
 export default {
   name: 'YFormItem',
   componentName: 'YFormItem',
@@ -17,6 +19,7 @@ export default {
       errTips: ""
     };
   },
+  mixins: [emitter],
   props: {
     label: {
       type: String,
@@ -34,6 +37,9 @@ export default {
       console.log('on input validate')
       this.validate();
     });
+    if (this.prop) {
+      this.dispatch('YForm', 'warryy.form.addField', [this]);
+    }
   },
   methods: {
     validate() {
