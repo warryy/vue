@@ -1,29 +1,12 @@
 <template>
   <div id="app">
-    <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <div class="demo">
-      <Comp></Comp>
+    <div id="nav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link>
     </div>
-    <div class="demo">
-      <mySlot></mySlot>
-    </div>
+    <router-view/>
   </div>
 </template>
-
-<script>
-// import HelloWorld from './components/HelloWorld.vue'
-import mySlot from "./components/slots/Index";
-import Comp from "./components/comp/Index";
-
-export default {
-  name: "App",
-  components: {
-    mySlot,
-    Comp,
-  }
-};
-</script>
 
 <style>
 #app {
@@ -32,10 +15,18 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
-.demo {
-  margin: 5px;
-  border: 1px solid #46a0f0;
+
+#nav {
+  padding: 30px;
+}
+
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+#nav a.router-link-exact-active {
+  color: #42b983;
 }
 </style>
