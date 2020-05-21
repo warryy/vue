@@ -1,5 +1,5 @@
-import View from '@/kvue-router/yrouter-view';
-import Link from '@/kvue-router/yrouter-link';
+import View from '@/yvue-router/yrouter-view';
+import Link from '@/yvue-router/yrouter-link';
 
 let Vue;
 

@@ -4,9 +4,9 @@ import App from './App.vue'
 import create from '@/util/create.js'
 
 // import router from './router'
-import router from './kvue-router'
+import router from './yvue-router'
 
-import store from './store'
+import store from './ystore'
 
 Vue.config.productionTip = false
 
