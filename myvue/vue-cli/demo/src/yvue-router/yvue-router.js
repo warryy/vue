@@ -6,23 +6,50 @@ let Vue;
 class router {
     constructor(options) {
         // 将 current 设置成响应式数据
-        Vue.util.defineReactive(this, 'current', '/');
+        let hashUrl = window.location.hash.slice(1);
+        // Vue.util.defineReactive(this, 'current', hashUrl || '/');
+        
         // 存储 options
         this.$options = options;
-        // 监听 url 的 hash 改变
-        window.addEventListener('hashchange', this.onhashchange.bind(this))
-        window.addEventListener('load', this.onhashchange.bind(this))
+        Vue.util.defineReactive(this, 'matched', []);
+       
 
-        // 缓存路由
-        this.routeMap = {};
-        this.$options.routes.forEach(route => {
-            this.routeMap[route.path] = route;
-        });
+        this.current = hashUrl || '/';
+        this.match();
+
+         // 监听 url 的 hash 改变
+         window.addEventListener('hashchange', this.onhashchange.bind(this))
+         window.addEventListener('load', this.onhashchange.bind(this))
+        // // 缓存路由
+        // this.routeMap = {};
+        // this.$options.routes.forEach(route => {
+        //     this.routeMap[route.path] = route;
+        // });
+    }
+
+    match(routes) {
+        routes = routes || this.$options.routes;
+        for (let i = 0; i < routes.length; ++i) {
+            const route = routes[i];
+            if (this.current === '/' && route.path === '/') {
+                this.matched.push(route);
+                return;
+            }
+            if (this.current !== '/' && this.current.indexOf(route.path) != -1 && route.path !=='/') {
+                this.matched.push(route);
+                if (route.children) {
+                    this.match(route.children);
+                }
+                return;
+            }
+        }
     }
 
     onhashchange(e) {
         console.log('onhashchange', this.current)
         this.current = e.target.location.hash.slice(1);
+        this.matched = [];
+        this.match();
     }
 }
 

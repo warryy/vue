@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import YVueRouter from './yvue-router'
 import Home from '@/views/Home.vue'
+import Info from '@/views/Info.vue'
 
 Vue.use(YVueRouter)
 
@@ -16,7 +17,14 @@ Vue.use(YVueRouter)
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '@/views/About.vue')
+    component: () => import(/* webpackChunkName: "about" */ '@/views/About.vue'),
+    children: [
+      {
+        path: '/about/info',
+        name: 'Info',
+        component: Info
+      }
+    ]
   }
 ]
 
