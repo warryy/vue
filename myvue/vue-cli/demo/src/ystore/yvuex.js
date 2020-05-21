@@ -8,6 +8,7 @@ class Store {
             }
         });
 
+        this._mutations = options.mutations;
     }
 
     get state() {
@@ -16,6 +17,15 @@ class Store {
 
     set state(v) {
         console.error('不可以直接设置 state, 需要提交 mutation 或者派发 action')
+    }
+
+    commit(mutationName, payload) {
+        let entry = this._mutations[mutationName];
+        if (!entry) {
+            console.error('未知的 mutation: ', mutationName)
+            return;
+        }
+        entry(this.state, payload);
     }
 }
 
