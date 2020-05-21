@@ -12,6 +12,12 @@ class router {
         // 监听 url 的 hash 改变
         window.addEventListener('hashchange', this.onhashchange.bind(this))
         window.addEventListener('load', this.onhashchange.bind(this))
+
+        // 缓存路由
+        this.routeMap = {};
+        this.$options.routes.forEach(route => {
+            this.routeMap[route.path] = route;
+        });
     }
 
     onhashchange(e) {
