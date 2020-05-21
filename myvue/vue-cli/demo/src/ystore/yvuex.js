@@ -8,7 +8,17 @@ class Store {
             }
         });
 
+        // 存储 mutation
         this._mutations = options.mutations;
+        // 存储 action
+        this._actions = options.actions;
+
+        this.commit = function boundCommit(state, payload) {
+            commit.call(this, state, payload)
+        }
+        this.dispatch = function boundDispatch(state, payload) {
+            dispatch.call(this, state, payload)
+        }
     }
 
     get state() {
@@ -19,14 +29,25 @@ class Store {
         console.error('不可以直接设置 state, 需要提交 mutation 或者派发 action')
     }
 
-    commit(mutationName, payload) {
-        let entry = this._mutations[mutationName];
-        if (!entry) {
-            console.error('未知的 mutation: ', mutationName)
-            return;
-        }
-        entry(this.state, payload);
+
+}
+
+function commit(mutationName, payload) {
+    let entry = this._mutations[mutationName];
+    if (!entry) {
+        console.error('未知的 mutation: ', mutationName)
+        return;
     }
+    entry(this.state, payload);
+}
+
+function dispatch(actionName, payload) {
+    let entry = this._actions[actionName];
+    if (!entry) {
+        console.error('未知的 action: ', actionName)
+        return;
+    }
+    entry(this, payload);
 }
 
 function install(_vue) {

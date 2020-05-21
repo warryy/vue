@@ -18,9 +18,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    asyncAdd(state, payload) {
+    asyncAdd(context, payload) {
       setTimeout(() => {
-        this.commit('add', payload)
+        context.commit('add', payload)
       }, 1000);
     }
   },

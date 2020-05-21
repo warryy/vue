@@ -4,8 +4,14 @@
     <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
     <div class="vuex">
       <h3>vuex demo</h3>
-      <p><button @click="$store.commit('add', 2)">add(2)</button>count: {{$store.state.count}}</p>
-      <!-- <p><button @click="$store.dispatch('asyncAdd', 2)">asyncAdd(2)</button>doubleCount: {{$store.getters.doubleCount}}</p> -->
+      <p>
+        <button @click="$store.commit('add', 2)">add(2)</button>
+        count: {{$store.state.count}}
+      </p>
+      <p>
+        <button @click="$store.dispatch('asyncAdd', 2)">asyncAdd(2)</button>
+        <!-- doubleCount: {{$store.getters.doubleCount}} -->
+      </p>
     </div>
     <div class="demo">
       <Comp></Comp>
@@ -29,9 +35,9 @@ export default {
     mySlot,
     Comp
   },
-  mounted () {
+  mounted() {
     console.log(this.$store);
-  },
+  }
 };
 </script>
 <style scoped>
