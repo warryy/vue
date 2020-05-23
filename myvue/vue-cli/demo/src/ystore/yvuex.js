@@ -2,10 +2,27 @@ let Vue;
 
 class Store {
     constructor(options) {
-        this._state = new Vue({
+        // 存储 getters
+        this.wrapGetters = options.getters;
+
+        this.getters = {};
+        const _store = this;
+        Object.keys(this.wrapGetters).forEach(key => {
+            console.log('_store instanceof Store', _store instanceof Store);
+           const fn = _store.wrapGetters[key];
+            
+            Object.defineProperty(_store.getters, key, {
+                get() {
+                    return fn(_store.state)
+                }
+            });
+        });
+
+        this._vm = new Vue({
             data: {
                 $$state: options.state
-            }
+            },
+            computed: _store.getters
         });
 
         // 存储 mutation
@@ -22,7 +39,7 @@ class Store {
     }
 
     get state() {
-        return this._state._data.$$state
+        return this._vm._data.$$state
     }
 
     set state(v) {

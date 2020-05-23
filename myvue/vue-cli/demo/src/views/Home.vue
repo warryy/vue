@@ -10,7 +10,7 @@
       </p>
       <p>
         <button @click="$store.dispatch('asyncAdd', 2)">asyncAdd(2)</button>
-        <!-- doubleCount: {{$store.getters.doubleCount}} -->
+        doubleCount: {{$store.getters.doubleCount}}
       </p>
     </div>
     <div class="demo">
