@@ -11,6 +11,7 @@
 <div id="app">
     <p>{{count}}</p>
     <p y-text="count"></p>
+    <p y-html="desc"></p>
 </div>
 </body>
 <script src="./lib/vue.js"></script>
@@ -19,7 +20,8 @@
 const app = new YVue({
     el: '#app',
     data: {
-        count: 1
+        count: 1,
+        desc: '<span style="color: red">慢慢来, 别不着急</span>'
     }
 }); 
 
