@@ -1,3 +1,5 @@
+'use strict';
+
 function observe(obj) {
     if (typeof obj !== 'object' || obj === null) return;
     new Observer(obj);
@@ -16,6 +18,7 @@ function defineProperty(obj, key, val) {
             if (val !== newVal) {
                 observe(newVal);
                 val = newVal;
+                watchers.forEach(w => w.update())
             }
             console.log('set: ', key, val);
             return val;
@@ -112,7 +115,7 @@ class Compile {
     isElement(node) {
         return node.nodeType === 1;
     }
-    
+
     isInner(node) {
         return node.nodeType === 3 && /\{\{(.*)\}\}/.test(node.textContent);
     }
@@ -137,23 +140,49 @@ class Compile {
             let exp = attr.value;
 
             // 如果是自定义指令
-            if (this.isDirective(attrName)){
-                // 获取指令的名字
+            if (this.isDirective(attrName)) {
+                // 获取指令1``的名字
                 let directiveName = attrName.slice(2);
-                this[directiveName] && this[directiveName](node, exp);
+                this.update(node, exp, directiveName);
             }
         })
+    }
+
+    update(node, exp, dir) {
+        const fn = this[dir + 'Updater'];
+        // fn && fn.call(this, node, exp);
+        fn && fn(node, this.$vm[exp]);
+        
+        // new watcher, 将 update 传给 watcher
+        new Watcher(this.$vm, exp, function (val) {
+            fn && fn(node, val);
+        });
     }
 
     isDirective(attrName) {
         return attrName.indexOf('y-') === 0;
     }
 
-    text(node, exp) {
-        node.textContent = this.$vm[exp];
+    textUpdater(node, val) {
+        node.textContent = val;
     }
 
-    html(node, exp) {
-        node.innerHTML = this.$vm[exp];
+    htmlUpdater(node, val) {
+        node.innerHTML = val;
+    }
+}
+const watchers = [];
+// vm + exp ==> update
+class Watcher {
+    constructor(vm, exp, updater) {
+        this.vm = vm;
+        this.exp = exp;
+        this.updater = updater;
+        this.update()
+        watchers.push(this);
+    }
+
+    update() {
+        this.updater(this.vm[this.exp]);
     }
 }
