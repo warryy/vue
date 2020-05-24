@@ -62,6 +62,7 @@ class YVue {
         proxy(this, '$data');
 
         // 2. 模板编译
+        new Compile(this.$options.el, this);
     }
 }
 
@@ -75,5 +76,80 @@ class Observer {
         Object.keys(value).forEach(key => {
             defineProperty(value, key, value[key]);
         });
+    }
+}
+
+
+// 编译器, 获取模板中的指令和插值
+class Compile {
+    // vm: yvue 的实例, 用于初始化和更新页面
+    // el: 选择器, 用于获取 dom
+    constructor(el, vm) {
+        this.$el = document.querySelector(el);
+        this.$vm = vm;
+        this.compile(this.$el);
+    }
+
+    // 编译
+    compile(html) {
+        let childNodes = html.childNodes;
+        Array.from(childNodes).forEach(child => {
+            if (this.isElement(child)) {
+                this.compileElement(child);
+            }
+
+            if (this.isInner(child)) {
+                this.compileText(child);
+            }
+
+            // 递归
+            if (child.childNodes) {
+                this.compile(child)
+            }
+        });
+    }
+
+    isElement(node) {
+        return node.nodeType === 1;
+    }
+    
+    isInner(node) {
+        return node.nodeType === 3 && /\{\{(.*)\}\}/.test(node.textContent);
+    }
+
+    // 编译插值文本
+    compileText(node) {
+        node.textContent = this.$vm[RegExp.$1];
+    }
+
+    // 编译元素节点, 判断其属性是否含有 y-xx 的指令语法, 目前只支持 y-text
+    /**
+     * 1. 拿到节点属性名
+     * 2. 遍历属性名, 判断是否是指令(目前只看 y-text 这个指令)
+     * 3. 获取到指令的名称和值
+     * 4. 通过名称找到定义好的对应的函数, 执行
+     */
+    compileElement(node) {
+        let nodeAttrs = node.attributes;
+
+        Array.from(nodeAttrs).forEach(attr => {
+            let attrName = attr.name;
+            let exp = attr.value;
+
+            // 如果是自定义指令
+            if (this.isDirective(attrName)){
+                // 获取指令的名字
+                let directiveName = attrName.slice(2);
+                this[directiveName] && this[directiveName](node, exp);
+            }
+        })
+    }
+
+    isDirective(attrName) {
+        return attrName.indexOf('y-') === 0;
+    }
+
+    text(node, exp) {
+        node.textContent = this.$vm[exp];
     }
 }
