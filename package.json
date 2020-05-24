@@ -1,9 +1,17 @@
 {
-  "scripts": {
-    "cm": "git-cz"
+  "devDependencies": {
+    "cz-conventional-changelog": "3.2.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    },
+    "ghooks": {
+      "commit-msg": "validate-commit-msg"
+    }
   },
   "dependencies": {
-    "commitizen": "^4.1.2",
-    "cz-conventional-changelog": "^3.2.0"
+    "ghooks": "^2.0.4",
+    "validate-commit-msg": "^2.14.0"
   }
 }
