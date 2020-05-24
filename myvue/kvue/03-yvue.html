@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>yvue</title>
+</head>
+
+<body>
+<div id="app">{{count}}</div>
+</body>
+<script src="./lib/vue.js"></script>
+<script src="./yvue.js"></script>
+<script>
+const app = new YVue({
+    el: '#app',
+    data: {
+        count: 1
+    }
+}); 
+
+
+setInterval(() => {
+    app.count ++;
+}, 2000)
+
+</script>
+
+</html>
