@@ -55,6 +55,7 @@ class YVue {
     constructor(options) {
         this.$options = options;
         this.$data = options.data;
+        this.$methods = options.methods;
 
         // 1. 响应式处理
         // TODO: 此处为什么不用 Observer 实例来写
@@ -63,6 +64,7 @@ class YVue {
 
         // 1.1. 数据的代理
         proxy(this, '$data');
+        proxy(this, '$methods');
 
         // 2. 模板编译
         new Compile(this.$options.el, this);
@@ -146,6 +148,13 @@ class Compile {
                 let directiveName = attrName.slice(2);
                 this[directiveName] && this[directiveName](node, exp);
             }
+
+            // 如果是事件监听函数
+            if (this.isEvent(attrName)) {
+                let eventName = attrName.slice(1);
+                this[eventName] && this[eventName](node, exp);
+            }
+
         })
     }
 
@@ -162,6 +171,16 @@ class Compile {
 
     isDirective(attrName) {
         return attrName.indexOf('y-') === 0;
+    }
+
+    isEvent(attrName) {
+        return attrName.indexOf('@') === 0;
+    }
+
+    click(node, exp) {
+        node.addEventListener('click', e => {
+            this.$vm[exp] && this.$vm[exp]();
+        });
     }
 
     model(node, exp) {

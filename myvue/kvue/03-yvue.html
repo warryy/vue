@@ -13,6 +13,7 @@
     <p y-text="count"></p>
     <p y-html="desc"></p>
     <textarea y-model="desc" cols="30" rows="3"></textarea>
+    <p><button @click="add2">add 2</button></p>
 
 </div>
 </body>
@@ -24,6 +25,11 @@ const app = new YVue({
     data: {
         count: 1,
         desc: '<span style="color: red">慢慢来, 别不着急</span>'
+    },
+    methods: {
+        add2() {
+            this.count += 2;
+        }
     }
 }); 
 
