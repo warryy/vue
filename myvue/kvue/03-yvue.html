@@ -12,6 +12,8 @@
     <p>{{count}}</p>
     <p y-text="count"></p>
     <p y-html="desc"></p>
+    <textarea y-model="desc" cols="30" rows="3"></textarea>
+
 </div>
 </body>
 <script src="./lib/vue.js"></script>
@@ -26,9 +28,9 @@ const app = new YVue({
 }); 
 
 
-setInterval(() => {
-    app.count ++;
-}, 2000)
+// setInterval(() => {
+//     app.count ++;
+// }, 2000)
 
 </script>
 

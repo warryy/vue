@@ -144,7 +144,7 @@ class Compile {
             if (this.isDirective(attrName)) {
                 // 获取指令1``的名字
                 let directiveName = attrName.slice(2);
-                this.update(node, exp, directiveName);
+                this[directiveName] && this[directiveName](node, exp);
             }
         })
     }
@@ -152,11 +152,11 @@ class Compile {
     update(node, exp, dir) {
         const fn = this[dir + 'Updater'];
         // fn && fn.call(this, node, exp);
-        fn && fn(node, this.$vm[exp]);
+        fn && fn(node, this.$vm[exp], exp);
         
         // new watcher, 将 update 传给 watcher
         new Watcher(this.$vm, exp, function (val) {
-            fn && fn(node, val);
+            fn && fn(node, val, exp);
         });
     }
 
@@ -164,8 +164,28 @@ class Compile {
         return attrName.indexOf('y-') === 0;
     }
 
+    model(node, exp) {
+        this.update(node, exp, 'model');
+
+        node.addEventListener('input', e => {
+            this.$vm[exp] = e.currentTarget.value;
+        })
+    }
+
+    modelUpdater(node, val) {
+        node.value = val;
+    }
+
+    text(node, exp) {
+        this.update(node, exp, 'text');
+    }
+
     textUpdater(node, val) {
         node.textContent = val;
+    }
+
+    html(node, exp) {
+        this.update(node, exp, 'html');
     }
 
     htmlUpdater(node, val) {
