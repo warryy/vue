@@ -122,7 +122,8 @@ class Compile {
 
     // 编译插值文本
     compileText(node) {
-        node.textContent = this.$vm[RegExp.$1];
+        // node.textContent = this.$vm[RegExp.$1];
+        this.update(node, RegExp.$1, 'text');
     }
 
     // 编译元素节点, 判断其属性是否含有 y-xx 的指令语法, 目前只支持 y-text
