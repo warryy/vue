@@ -30,11 +30,11 @@ class Store {
         // 存储 action
         this._actions = options.actions;
 
-        this.commit = function boundCommit(state, payload) {
-            commit.call(this, state, payload)
+        this.commit = function boundCommit(mutationName, payload) {
+            commit.call(this, mutationName, payload)
         }
-        this.dispatch = function boundDispatch(state, payload) {
-            dispatch.call(this, state, payload)
+        this.dispatch = function boundDispatch(actoinName, payload) {
+            dispatch.call(this, actoinName, payload)
         }
     }
 
